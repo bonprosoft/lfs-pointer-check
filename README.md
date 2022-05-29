@@ -1,6 +1,7 @@
 # lfs-pointer-check
 
 A program to check whether all the files that are supposed to be tracked by `git-lfs` have valid git-lfs pointers.
+
 This program might be effective in collaborative software development, where some people might forget to run `git lfs install`.
 
 It also checks if all the large files in the `HEAD` are tracked by `git-lfs` when the `--size-limit` option is given.
@@ -35,7 +36,7 @@ Args:
 
 ## Examples
 
-```
+```sh
 $ lfs-pointer-check
 images/data.png: Invalid LFS Pointer
 images/data2.png: Invalid LFS Pointer
