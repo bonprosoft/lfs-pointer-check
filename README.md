@@ -9,6 +9,14 @@ It also checks if all the large files in the `HEAD` are tracked by `git-lfs` whe
 
 Use `go install` or download the latest build from the [release page](https://github.com/bonprosoft/lfs-pointer-check/releases).
 
+```sh
+# via go install
+$ go install github.com/bonprosoft/lfs-pointer-check@latest
+
+# via release
+$ wget -c https://github.com/bonprosoft/lfs-pointer-check/releases/download/0.0.1/lfs_pointer_check_linux_amd64.tar.gz -O - | tar -xzv
+```
+
 ## Usage
 
 ```
