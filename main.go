@@ -58,11 +58,17 @@ func validateLfsPointer(workingDir string, path string) (bool, error) {
 		}
 	}()
 
-	if err := cat.Run(); err != nil {
+	if err := cat.Start(); err != nil {
 		return false, fmt.Errorf("failed to run git cat-file command: %s", err.Error())
 	}
-	check.Wait()
+	defer func() {
+		if cat.Process != nil {
+			cat.Process.Kill()
+			cat.Wait()
+		}
+	}()
 
+	check.Wait()
 	return check.ProcessState.ExitCode() == 0, nil
 }
 
