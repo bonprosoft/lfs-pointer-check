@@ -15,7 +15,7 @@ Use `go install` or download the latest build from the [release page](https://gi
 $ go install github.com/bonprosoft/lfs-pointer-check@latest
 
 # via release
-$ wget -c https://github.com/bonprosoft/lfs-pointer-check/releases/download/0.0.2/lfs_pointer_check_linux_amd64.tar.gz -O - | tar -xzv
+$ wget -c https://github.com/bonprosoft/lfs-pointer-check/releases/download/0.0.3/lfs_pointer_check_linux_amd64.tar.gz -O - | tar -xzv
 ```
 
 ## Usage
