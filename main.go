@@ -6,12 +6,28 @@ import (
 	"math"
 	"os"
 	"os/exec"
+	"path"
 
 	"github.com/dustin/go-humanize"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
+
+func isLfsTarget(path string) bool {
+	info, err := os.Lstat(path)
+	if err != nil {
+		return false
+	}
+
+	// Empty files doesn't have pointer
+	if info.Size() == 0 {
+		return false
+	}
+
+	// Symlink is excluded from lfs targets
+	return info.Mode()&os.ModeSymlink == 0
+}
 
 func listLfsFiles(workingDir string) (map[string]struct{}, error) {
 	cmd := exec.Command("git", "ls-files", "-z", "--full-name", ":(attr:filter=lfs)")
@@ -23,15 +39,16 @@ func listLfsFiles(workingDir string) (map[string]struct{}, error) {
 		return nil, fmt.Errorf("failed to run git ls-files: %s", err.Error())
 	}
 
-	paths := bytes.Split(out, []byte{'\000'})
+	entries := bytes.Split(out, []byte{'\000'})
 	ret := make(map[string]struct{})
-	for _, p := range paths {
-		path := string(p)
-		if path == "" {
+	for _, p := range entries {
+		entry := string(p)
+		if entry == "" {
 			continue
 		}
-
-		ret[path] = struct{}{}
+		if isLfsTarget(path.Join(workingDir, entry)) {
+			ret[entry] = struct{}{}
+		}
 	}
 
 	return ret, nil
